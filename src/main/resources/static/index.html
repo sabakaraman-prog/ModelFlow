@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ModelFlow</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background: #0b0f14;
+            color: #f0f6fc;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1050px;
+            margin: 0 auto;
+            padding: 55px 0 70px;
+        }
+
+        /* Header */
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 40px;
+        }
+
+        .brand h1 {
+            margin: 0;
+            font-size: 44px;
+            letter-spacing: -1.5px;
+        }
+
+        .subtitle {
+            margin: 8px 0 0;
+            color: #8b949e;
+            font-size: 15px;
+        }
+
+        .status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 13px;
+            border: 1px solid #30363d;
+            border-radius: 20px;
+            color: #b1bac4;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #3fb950;
+            border-radius: 50%;
+        }
+
+        /* Main panel */
+
+        .panel {
+            background: #11161d;
+            border: 1px solid #30363d;
+            border-radius: 14px;
+            overflow: hidden;
+        }
+
+        .inference-section {
+            padding: 32px;
+        }
+
+        .section-label {
+            color: #8b949e;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 1.3px;
+            margin-bottom: 12px;
+        }
+
+        .inference-section h2 {
+            margin: 0 0 22px;
+            font-size: 24px;
+        }
+
+        .input-row {
+            display: flex;
+            gap: 12px;
+        }
+
+        textarea {
+            flex: 1;
+            min-height: 100px;
+            resize: vertical;
+            padding: 15px;
+            background: #0b0f14;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            color: #f0f6fc;
+            font-family: inherit;
+            font-size: 15px;
+            line-height: 1.5;
+            outline: none;
+        }
+
+        textarea:focus {
+            border-color: #58a6ff;
+        }
+
+        textarea::placeholder {
+            color: #6e7681;
+        }
+
+        button {
+            align-self: stretch;
+            min-width: 155px;
+            padding: 0 22px;
+            background: #f0f6fc;
+            color: #0d1117;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 650;
+            cursor: pointer;
+            transition: 0.15s ease;
+        }
+
+        button:hover {
+            background: #d8dee4;
+            transform: translateY(-1px);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        /* Results */
+
+        .results {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            border-top: 1px solid #30363d;
+        }
+
+        .metric {
+            padding: 27px 32px;
+            min-height: 130px;
+        }
+
+        .metric:not(:last-child) {
+            border-right: 1px solid #30363d;
+        }
+
+        .metric-label {
+            color: #8b949e;
+            font-size: 11px;
+            font-weight: 650;
+            letter-spacing: 1px;
+            margin-bottom: 13px;
+        }
+
+        .metric-value {
+            margin: 0;
+            font-size: 29px;
+            letter-spacing: -0.5px;
+        }
+
+        /* Architecture */
+
+        .architecture {
+            margin-top: 24px;
+            padding: 27px 30px;
+            border: 1px solid #30363d;
+            border-radius: 14px;
+            background: #11161d;
+        }
+
+        .architecture-title {
+            color: #8b949e;
+            font-size: 11px;
+            font-weight: 650;
+            letter-spacing: 1px;
+            margin-bottom: 22px;
+        }
+
+        .pipeline {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 18px;
+        }
+
+        .service {
+            text-align: center;
+            min-width: 120px;
+        }
+
+        .service-name {
+            font-size: 14px;
+            font-weight: 650;
+            margin-bottom: 5px;
+        }
+
+        .service-tech {
+            color: #8b949e;
+            font-size: 12px;
+        }
+
+        .arrow {
+            color: #484f58;
+            font-size: 20px;
+        }
+
+        /* Footer */
+
+        .footer {
+            margin-top: 18px;
+            color: #6e7681;
+            font-size: 12px;
+            text-align: center;
+        }
+
+        /* Responsive */
+
+        @media (max-width: 700px) {
+
+            .header {
+                flex-direction: column;
+                gap: 18px;
+            }
+
+            .input-row {
+                flex-direction: column;
+            }
+
+            button {
+                min-height: 50px;
+            }
+
+            .results {
+                grid-template-columns: 1fr;
+            }
+
+            .metric:not(:last-child) {
+                border-right: none;
+                border-bottom: 1px solid #30363d;
+            }
+
+            .pipeline {
+                flex-direction: column;
+            }
+
+            .arrow {
+                transform: rotate(90deg);
+            }
+        }
+    </style>
+</head>
+
+
+<body>
+
+<div class="container">
+
+    <!-- Header -->
+
+    <div class="header">
+
+        <div class="brand">
+            <h1>ModelFlow</h1>
+            <p class="subtitle">
+                NLP inference gateway · Spring Boot + FastAPI + PyTorch
+            </p>
+        </div>
+
+        <div class="status">
+            <span class="status-dot"></span>
+            MODEL ONLINE
+        </div>
+
+    </div>
+
+
+    <!-- Inference Panel -->
+
+    <div class="panel">
+
+        <div class="inference-section">
+
+            <div class="section-label">
+                INFERENCE
+            </div>
+
+            <h2>Analyze text</h2>
+
+            <div class="input-row">
+
+                <textarea
+                    id="modelInput"
+                    placeholder="Enter text to analyze..."
+                ></textarea>
+
+                <button onclick="runInference()">
+                    Run inference
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- Metrics -->
+
+        <div class="results">
+
+            <div class="metric">
+                <div class="metric-label">
+                    SENTIMENT
+                </div>
+
+                <h3
+                    class="metric-value"
+                    id="prediction">
+                    --
+                </h3>
+            </div>
+
+
+            <div class="metric">
+                <div class="metric-label">
+                    CONFIDENCE
+                </div>
+
+                <h3
+                    class="metric-value"
+                    id="confidence">
+                    --
+                </h3>
+            </div>
+
+
+            <div class="metric">
+                <div class="metric-label">
+                    INFERENCE LATENCY
+                </div>
+
+                <h3
+                    class="metric-value"
+                    id="latency">
+                    -- ms
+                </h3>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Architecture -->
+
+    <div class="architecture">
+
+        <div class="architecture-title">
+            REQUEST PIPELINE
+        </div>
+
+        <div class="pipeline">
+
+            <div class="service">
+                <div class="service-name">Browser</div>
+                <div class="service-tech">Client</div>
+            </div>
+
+            <div class="arrow">→</div>
+
+            <div class="service">
+                <div class="service-name">Spring Boot</div>
+                <div class="service-tech">Java · :8080</div>
+            </div>
+
+            <div class="arrow">→</div>
+
+            <div class="service">
+                <div class="service-name">FastAPI</div>
+                <div class="service-tech">Python · :8000</div>
+            </div>
+
+            <div class="arrow">→</div>
+
+            <div class="service">
+                <div class="service-name">DistilBERT</div>
+                <div class="service-tech">PyTorch</div>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="footer">
+        REST-based model serving and inference monitoring
+    </div>
+
+</div>
+
+
+<script>
+
+    async function runInference() {
+
+        const text =
+            document.getElementById("modelInput").value;
+
+        const predictionElement =
+            document.getElementById("prediction");
+
+        const confidenceElement =
+            document.getElementById("confidence");
+
+        const latencyElement =
+            document.getElementById("latency");
+
+
+        const response = await fetch("/predict", {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify({
+                text: text
+            })
+
+        });
+
+
+        const data = await response.json();
+
+
+        if (data.error) {
+
+            predictionElement.textContent = "ERROR";
+            confidenceElement.textContent = "--";
+            latencyElement.textContent = "-- ms";
+
+            return;
+        }
+
+
+        predictionElement.textContent =
+            data.label;
+
+        confidenceElement.textContent =
+            (data.confidence * 100).toFixed(2) + "%";
+
+        latencyElement.textContent =
+            data.latency_ms.toFixed(2) + " ms";
+
+    }
+
+</script>
+
+</body>
+</html>
