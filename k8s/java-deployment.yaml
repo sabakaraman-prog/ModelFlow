@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: modelflow-java
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: modelflow-java
+
+  template:
+    metadata:
+      labels:
+        app: modelflow-java
+    
+    spec:
+      containers:
+        - name: java-service
+          image: modelflow-java:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080
+          env:
+            - name: PYTHON_SERVICE_URL
+              value: "http://modelflow-python-service:8000/predict"

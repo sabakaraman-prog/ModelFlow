@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: modelflow-python
+
+spec:
+  replicas: 1 #keeps one copy of python application running
+
+  selector: # to manage Pods that have the label app:modelflow-python
+    matchLabels:
+      app: modelflow-python
+  
+  template: # to define the Pod template for the Deployment
+    metadata:
+      labels:
+        app: modelflow-python
+      
+    spec:
+      containers:
+        - name: modelflow-python-container
+          image: modelflow-python:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8000
+      

@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+
+metadata:
+  name: modelflow-python-service
+
+spec:
+  selector:
+    app: modelflow-python
+
+  ports:
+    - port: 8000
+      targetPort: 8000
