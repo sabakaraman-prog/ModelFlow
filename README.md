@@ -1,8 +1,8 @@
 # ModelFlow
 
-ModelFlow is a multi-service NLP inference application that serves a pretrained sentiment analysis model through a Java Spring Boot API and a Python FastAPI service.
+ModelFlow is a containerized multi-service NLP inference application that serves a pretrained sentiment analysis model through a Java Spring Boot API and a Python FastAPI service.
 
-The project demonstrates communication between independently running backend services, REST API development, model serving, and inference performance monitoring.
+The project demonstrates communication between backend services, REST API development, model serving, Docker containerization, Kubernetes orchestration, service discovery, and inference performance monitoring.
 
 ## Architecture
 
@@ -10,27 +10,37 @@ The project demonstrates communication between independently running backend ser
 Browser Dashboard
        |
        | POST /predict
-       v
+       |
+Kubernetes Java Service 
+       |
+       |
 Spring Boot API
     Java :8080
        |
        | HTTP / JSON
-       v
-FastAPI Service
+       | Kubernetes DNS
+       |
+Kubernetes Python Service
+       |
+       |
+FastAPI Pod
    Python :8000
        |
-       v
+       |
 RoBERTa Sentiment Model
       PyTorch
 ```
-
-The browser sends text to the Spring Boot backend. Spring Boot forwards the request to the FastAPI model service, which runs inference using a pretrained RoBERTa sentiment classifier and returns the prediction to the dashboard.
+The Spring Boot and FastAPI applications run as separate containerized services orchestrated by Kubernetes. The browser sends text to the Spring Boot backend, which communicates with the FastAPI model service through Kubernetes service discovery. FastAPI runs inference using a pretrained RoBERTa sentiment classifier and returns the prediction to the dashboard.
 
 ## Features
 
 - REST API built with Java and Spring Boot
 - Python model-serving API built with FastAPI
 - Java-to-Python service communication using HTTP and JSON
+- Dockerized Java and Python services
+- Kubernetes Deployments for application orchestration
+- Kubernetes Services for internal networking
+- Kubernetes DNS-based service discovery
 - Pretrained RoBERTa sentiment analysis model
 - Positive, neutral, and negative sentiment classification
 - Confidence score reporting
@@ -52,6 +62,10 @@ The browser sends text to the Spring Boot backend. Spring Boot forwards the requ
 - PyTorch
 - Hugging Face Transformers
 - RoBERTa
+
+**Infrastructure**
+- Docker
+- Kubernetes
 
 **Frontend**
 - HTML
@@ -113,6 +127,14 @@ Checks whether the Python model service is running.
 `POST /predict`
 
 Runs sentiment inference and returns the predicted label, confidence score, and model inference latency.
+
+## Deployment
+
+The Java and Python services are packaged as separate Docker images and deployed using Kubernetes Deployments and Services.
+
+Kubernetes provides internal service discovery between the Spring Boot and FastAPI services. The Java service receives the Python service URL through the `PYTHON_SERVICE_URL` environment variable.
+
+The Kubernetes manifests are located in the `k8s/` directory.
 
 ## Running Locally
 
