@@ -35,7 +35,7 @@ public class PredictionController {
         HttpClient client = HttpClient.newHttpClient();
 
         HttpRequest request = HttpRequest.newBuilder()
-            .uri(URI.create("http://localhost:8000/predict"))
+            .uri(URI.create("http://modelflow-python-container:8000/predict"))
             .header("Content-Type", "application/json")
             .POST(HttpRequest.BodyPublishers.ofString(
                 "{\"text\":\"" + text + "\"}"
